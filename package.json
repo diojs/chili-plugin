@@ -1,0 +1,19 @@
+{
+  "name": "chili-plugin",
+  "version": "0.0.1",
+  "description": "绝云椒椒（亦可称为吃梨）插件",
+  "type": "module",
+  "module": "index.js",
+  "main": "index.js",
+  "scripts": {
+  },
+  "imports": {
+    "#cfg": "./models/cfg.js",
+    "#plugin": "./models/plugin.js"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [],
+  "author": "zolay",
+  "license": "MIT"
+}
