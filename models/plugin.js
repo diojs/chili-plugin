@@ -11,5 +11,6 @@ class MyPlugin extends plugin {
 }
 
 export {
-  MyPlugin as plugin
+  MyPlugin as plugin,
+  plugin as yzPlugin,
 }

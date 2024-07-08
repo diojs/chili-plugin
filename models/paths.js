@@ -7,13 +7,13 @@ const _path = process.cwd()
 export const _paths = initPaths()
 
 function initPaths() {
-  // 插件根目录
   const pluginRoot = path.join(_path, 'plugins', pluginName)
 
   return {
     // Bot根目录
     root: _path,
 
+    // 插件根目录
     pluginRoot,
   }
 }

@@ -1,7 +1,7 @@
 import path from 'path'
 import lodash from 'lodash'
 import cfg from "#cfg";
-import {_paths} from "./models/paths.js";
+import {_paths} from "#paths";
 
 export function supportGuoba() {
   return {
