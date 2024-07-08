@@ -9,6 +9,7 @@
   },
   "imports": {
     "#cfg": "./models/cfg.js",
+    "#utils": "./models/utils.js",
     "#paths": "./models/paths.js",
     "#plugin": "./models/plugin.js",
     "#logger": "./models/logger.js"
