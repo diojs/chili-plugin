@@ -14,3 +14,17 @@ export {
   MyPlugin as plugin,
   plugin as yzPlugin,
 }
+
+/**
+ * App+
+ */
+export class AppPlus extends plugin {
+
+  constructor(options) {
+    super(options)
+  }
+
+  get isTRSS() {
+    return false // todo
+  }
+}
