@@ -1,3 +1,4 @@
+import * as os from 'os'
 import path from 'path'
 
 /** 插件实际所在的目录名 */
@@ -27,11 +28,14 @@ function initPaths() {
  * @return {string}
  */
 function resolveDirname(url, ...paths) {
-  if (url.startsWith('file:///')) {
-    url = url.substring(8)
-  }
-  if (url.startsWith('file://')) {
-    url = url.substring(7)
+  if (os.platform() === 'win32') {
+    if (url.startsWith('file:///')) {
+      url = url.substring(8)
+    }
+  } else {
+    if (url.startsWith('file://')) {
+      url = url.substring(7)
+    }
   }
   url = path.resolve(path.dirname(url))
   if (Array.isArray(paths) && paths.length > 0) {
