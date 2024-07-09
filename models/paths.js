@@ -20,12 +20,22 @@ function initPaths() {
   }
 }
 
-function resolveDirname(url) {
+/**
+ * 返回当前文件的目录名
+ * @param url 当前文件的import.meta.url
+ * @param paths 按需拼接的路径
+ * @return {string}
+ */
+function resolveDirname(url, ...paths) {
   if (url.startsWith('file:///')) {
     url = url.substring(8)
   }
   if (url.startsWith('file://')) {
     url = url.substring(7)
   }
-  return path.resolve(path.dirname(url))
+  url = path.resolve(path.dirname(url))
+  if (Array.isArray(paths) && paths.length > 0) {
+    url = path.join(url, ...paths)
+  }
+  return url
 }
