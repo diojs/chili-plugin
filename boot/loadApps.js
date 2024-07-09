@@ -3,30 +3,42 @@ import path from 'path'
 import {_paths} from '#paths'
 import {logger} from '#logger'
 import {yzPlugin} from '#plugin'
+import {instanceOf} from '#utils'
 
 /**
  * 加载apps下所有的插件
  */
-export async function loadApps(apps) {
-  const files = fs.readdirSync(path.join(_paths.pluginRoot, 'apps')).filter(file => file.endsWith('.js'))
+export async function loadChiliApps(apps) {
+  const appsPath = path.join(_paths.pluginRoot, 'apps')
+  await loadApps(apps, appsPath)
+  await loadAppsPlus(apps, path.join(_paths.pluginRoot, 'apps_plus'), 0)
+}
+
+/**
+ * 加载传统v3插件
+ * @param apps 用于保存加载的插件
+ * @param appsPath 插件目录
+ * @return {Promise<void>}
+ */
+export async function loadApps(apps, appsPath) {
+  const files = fs.readdirSync(appsPath).filter(file => file.endsWith('.js'))
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
     const name = file.replace(/.js$/, '')
-    const appPath = path.join(_paths.pluginRoot, 'apps', file)
+    const appPath = path.join(appsPath, file)
     try {
       await loadApp(apps, name, appPath)
     } catch (e) {
       logger.error(`载入插件错误：${logger.red(name)}`, e)
     }
   }
-
-  await loadJs(apps, path.join(_paths.pluginRoot, 'apps_js'))
+  return apps
 }
 
 /**
- * 加载单js插件（apps_js）
+ * 加载 apps_plus 插件
  */
-async function loadJs(apps, rootPath) {
+async function loadAppsPlus(apps, rootPath, level = 0) {
   if (!fs.existsSync(rootPath)) {
     return
   }
@@ -39,7 +51,16 @@ async function loadJs(apps, rootPath) {
     // 判断是否是目录
     const stat = fs.statSync(itemPath)
     if (stat.isDirectory()) {
-      await loadJs(apps, itemPath)
+      // 判断首层目录，如果包含 chili.entry.js 则认为是类plugins，仅加载 chili.entry.js
+      if (level === 0) {
+        const entryPath = path.join(itemPath, 'chili.entry.js')
+        if (fs.existsSync(entryPath)) {
+          const {apps: entryApps} = await import(`file:///${entryPath}`)
+          Object.assign(apps, entryApps)
+          continue
+        }
+      }
+      await loadAppsPlus(apps, itemPath, level + 1)
     } else if (item.endsWith('.js')) {
       const name = item.replace(/.js$/, '')
       try {
@@ -66,19 +87,4 @@ async function loadApp(apps, name, appPath) {
       apps[key] = value
     }
   }
-}
-
-/**
- * 判断是否是某个类的实例或继承类
- *
- * @param obj
- * @param clazz
- */
-function instanceOf(obj, clazz) {
-  if (obj instanceof clazz) {
-    return true
-  } else if (obj?.prototype) {
-    return instanceOf(obj.prototype, clazz)
-  }
-  return false
 }

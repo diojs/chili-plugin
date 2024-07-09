@@ -1,11 +1,11 @@
 import {logger} from '#logger'
-import {loadApps, loadV2Apps} from './boot/index.js'
+import {loadChiliApps, loadV2Apps} from './boot/index.js'
 
 const apps = {}
 
 let passed = await checkPackage()
 if (passed) {
-  await loadApps(apps)
+  await loadChiliApps(apps)
   // 加载 v2 插件
   await loadV2Apps()
   logger.mark('启动成功')

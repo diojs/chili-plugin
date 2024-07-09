@@ -12,3 +12,18 @@ export function importRoot(modulePath) {
   }
   return import(modulePath)
 }
+
+/**
+ * 判断是否是某个类的实例或继承类
+ *
+ * @param obj
+ * @param clazz
+ */
+export function instanceOf(obj, clazz) {
+  if (obj instanceof clazz) {
+    return true
+  } else if (obj?.prototype) {
+    return instanceOf(obj.prototype, clazz)
+  }
+  return false
+}

@@ -15,5 +15,17 @@ function initPaths() {
 
     // 插件根目录
     pluginRoot,
+
+    resolveDirname,
   }
+}
+
+function resolveDirname(url) {
+  if (url.startsWith('file:///')) {
+    url = url.substring(8)
+  }
+  if (url.startsWith('file://')) {
+    url = url.substring(7)
+  }
+  return path.resolve(path.dirname(url))
 }
