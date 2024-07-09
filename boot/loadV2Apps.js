@@ -6,7 +6,7 @@ import {logger} from '#logger'
 
 let v2Apps = []
 
-const v2JsPath = path.join(_paths.pluginRoot, 'apps/v2-js')
+const v2JsPath = path.join(_paths.pluginRoot, 'apps_v2')
 
 // 加载V2单JS文件插件
 export async function loadV2Apps() {

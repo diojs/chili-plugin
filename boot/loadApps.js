@@ -20,11 +20,11 @@ export async function loadApps(apps) {
     }
   }
 
-  await loadJs(apps, path.join(_paths.pluginRoot, 'apps/js'))
+  await loadJs(apps, path.join(_paths.pluginRoot, 'apps_js'))
 }
 
 /**
- * 加载单js插件（apps/js）
+ * 加载单js插件（apps_js）
  */
 async function loadJs(apps, rootPath) {
   if (!fs.existsSync(rootPath)) {

@@ -1,4 +1,4 @@
 /.idea/*
 /config/**
-/apps/js/**
-/apps/v2-js/**
+/apps_js/**
+/apps_v2/**
