@@ -4,6 +4,7 @@ import {_paths} from '#paths'
 import {logger} from '#logger'
 import {yzPlugin} from '#plugin'
 import {instanceOf} from '#utils'
+import {registerAppPlus} from '../models/store.js'
 
 /**
  * 加载apps下所有的插件
@@ -55,8 +56,14 @@ async function loadAppsPlus(apps, rootPath, level = 0) {
       if (level === 0) {
         const entryPath = path.join(itemPath, 'chili.entry.js')
         if (fs.existsSync(entryPath)) {
-          const {apps: entryApps} = await import(`file:///${entryPath}`)
-          Object.assign(apps, entryApps)
+          const {ChiliAppOptions: AppOpts} = await import(`file:///${entryPath}`)
+          if (!AppOpts.apps) {
+            logger.error(`载入AppPlus错误：${logger.red(entryPath)}，请导出 ChiliAppOptions`)
+            continue
+          }
+          Object.assign(apps, AppOpts.apps)
+          AppOpts.name = AppOpts.name ? AppOpts.name : item
+          registerAppPlus(AppOpts.name, AppOpts)
           continue
         }
       }
@@ -66,7 +73,7 @@ async function loadAppsPlus(apps, rootPath, level = 0) {
       try {
         await loadApp(apps, name, itemPath)
       } catch (e) {
-        logger.error(`载入JS插件错误：${logger.red(itemPath)}`, e)
+        logger.error(`载入AppPlus错误：${logger.red(itemPath)}`, e)
       }
     }
   }

@@ -10,6 +10,7 @@
   "imports": {
     "#chili": "./chili.js",
     "#cfg": "./models/cfg.js",
+    "#store": "./models/store.js",
     "#utils": "./models/utils.js",
     "#paths": "./models/paths.js",
     "#plugin": "./models/plugin.js",

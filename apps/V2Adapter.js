@@ -1,6 +1,6 @@
 import lodash from 'lodash'
-import {v2Apps} from '../boot/loadV2Apps.js'
 import {ChiliPlugin} from '#plugin'
+import {getV2Apps} from '#store'
 
 /**
  * 兼容V2
@@ -18,6 +18,7 @@ export class ChiliV2Adapter extends ChiliPlugin {
   }
 
   async accept(e) {
+    const v2Apps = getV2Apps()
     for (const v2App of v2Apps) {
       let noCheck = !v2App.reg || v2App.reg === 'noCheck'
       let doLog = () => global.logger.mark(`[Chili_V2][${v2App.key}] ${lodash.truncate(e.msg, {length: 12})}`)

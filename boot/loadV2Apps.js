@@ -1,31 +1,31 @@
 import fs from 'fs'
 import path from 'path'
-import lodash from 'lodash'
 import {_paths} from '#paths'
 import {logger} from '#logger'
-
-let v2Apps = []
+import {registerV2App} from '#store'
 
 const v2JsPath = path.join(_paths.pluginRoot, 'apps_v2')
 
 // 加载V2单JS文件插件
 export async function loadV2Apps() {
-  let checkReg = /.js$/i
-  let fileList = fs.readdirSync(v2JsPath)
-  fileList = fileList.filter((i) => checkReg.test(i))
+  const v2Apps = []
+  const checkReg = /.js$/i
+  const fileList = fs.readdirSync(v2JsPath).filter((i) => checkReg.test(i))
   if (fileList.length === 0) {
     return
   }
   let count = 0
-  for (let fileName of fileList) {
+  for (const fileName of fileList) {
     try {
-      let filePath = path.join(v2JsPath, fileName)
-      let module = await import('file:///' + filePath)
-      if (!module.rule) continue
-      let name = fileName.replace(checkReg, '')
-      for (let [ruleName, rule] of Object.entries(module.rule)) {
-        let ruleKey = `${name}:${ruleName}`
-        let handler = module[ruleName]
+      const filePath = path.join(v2JsPath, fileName)
+      const module = await import('file:///' + filePath)
+      if (!module.rule) {
+        continue
+      }
+      const name = fileName.replace(checkReg, '')
+      for (const [ruleName, rule] of Object.entries(module.rule)) {
+        const ruleKey = `${name}:${ruleName}`
+        const handler = module[ruleName]
         if (typeof handler !== 'function') {
           // noinspection ExceptionCaughtLocallyJS
           throw new Error(`请先export该方法：${ruleName}`)
@@ -39,9 +39,7 @@ export async function loadV2Apps() {
     }
   }
   logger.info(`成功载入了${count}个V2插件`)
-  v2Apps = lodash.orderBy(v2Apps, ['priority'], ['asc'])
-}
-
-export {
-  v2Apps
+  if (count > 0) {
+    registerV2App(v2Apps)
+  }
 }
