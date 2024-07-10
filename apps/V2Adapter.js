@@ -1,11 +1,11 @@
 import lodash from 'lodash'
 import {v2Apps} from '../boot/loadV2Apps.js'
-import {plugin} from '#plugin'
+import {ChiliPlugin} from '#plugin'
 
 /**
  * 兼容V2
  */
-export class ChiliV2Adapter extends plugin {
+export class ChiliV2Adapter extends ChiliPlugin {
   constructor(e) {
     super({
       name: '兼容V2',

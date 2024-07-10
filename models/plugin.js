@@ -1,6 +1,6 @@
 import plugin from '../../../lib/plugins/plugin.js'
 
-class MyPlugin extends plugin {
+class ChiliPlugin extends plugin {
   constructor(options) {
 
     // 规范插件名
@@ -11,7 +11,7 @@ class MyPlugin extends plugin {
 }
 
 export {
-  MyPlugin as plugin,
+  ChiliPlugin,
   plugin as yzPlugin,
 }
 

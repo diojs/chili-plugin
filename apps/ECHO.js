@@ -1,11 +1,11 @@
-import {plugin} from '#plugin'
+import {ChiliPlugin} from '#plugin'
 
 const echoReg = /#ECHO (.+)/i
 
 /**
  * ECHO
  */
-export default class ECHO extends plugin {
+export default class ECHO extends ChiliPlugin {
 
   constructor() {
     super({
