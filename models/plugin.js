@@ -1,6 +1,10 @@
 import plugin from '../../../lib/plugins/plugin.js'
+import {logger} from '#logger'
 
 class ChiliPlugin extends plugin {
+
+  logger = logger
+
   constructor(options) {
 
     // 规范插件名
@@ -8,6 +12,7 @@ class ChiliPlugin extends plugin {
 
     super(options)
   }
+
 }
 
 export {
